@@ -1,0 +1,5 @@
+TYPE int
+TYPE float
+
+INCLUDE "line.h"
+TYPE Line

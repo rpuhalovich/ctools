@@ -1,0 +1,15 @@
+#include "array.h"
+
+%TYPE%_Array* new%TYPE%Array()
+{
+    %TYPE%_Array* a = malloc(sizeof(%TYPE%_Array));
+    a->items = malloc(sizeof(%TYPE%));
+    a->length = 1;
+    a->capacity = 1;
+}
+
+void free%TYPE%Array(%TYPE%_Array* a)
+{
+    free(a->items);
+    free(a);
+}
