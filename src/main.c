@@ -51,6 +51,7 @@ void populate_types_and_includes(char* path)
             memcpy(types[types_count++], (char*)(line + i + 1), linelen - i - 2);
     }
 
+    free(line);
     fclose(f);
 }
 
@@ -66,6 +67,7 @@ void read_template_file(char* path)
     while ((linelen = getline(&line, &linecap, f)) > 0)
         memcpy(template_file[template_file_count++], line, linelen - 1);
 
+    free(line);
     fclose(f);
 }
 
