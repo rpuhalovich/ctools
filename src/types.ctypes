@@ -6,3 +6,4 @@ TYPE int
 TYPE float
 TYPE char
 TYPE double
+TYPE size_t

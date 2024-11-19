@@ -153,12 +153,8 @@ int main(int argc, char** argv)
 
     char out_path[256];
     int len = get_out_filename(out_path, template_file_path);
-    char* write_path = malloc(len);
-    memcpy(write_path, out_path, len);
 
     write_file(out_path);
-
-    free(write_path);
 
     return 0;
 }
