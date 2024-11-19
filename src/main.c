@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 char types[128][64];
@@ -7,7 +8,8 @@ int types_count = 0;
 char includes[128][64];
 int includes_count = 0;
 
-char template_file[10000][512];
+#define MAX_LINE_LEN 512
+char template_file[10000][MAX_LINE_LEN];
 int template_file_count = 0;
 int template_begin = 0;
 int template_end = 0;
@@ -29,7 +31,8 @@ void populate_types_and_includes(char* path)
             continue;
 
         int i = 0;
-        for (;line[i] != ' '; i++) {}
+        for (; line[i] != ' '; i++) {
+        }
 
         if (strncmp("INCLUDE", line, strlen("INCLUDE")) == 0)
             memcpy(includes[includes_count++], (char*)(line + i + 1), linelen - i - 2);
@@ -72,10 +75,14 @@ void write_file(char* path)
     if (f == NULL)
         return;
 
-    for (int i = 0; i < out_file_name_length; i++) {
-        fprintf(fp, "yeet\n");
+    for (int i = 0; i < template_file_count; i++) {
+        if (strcmp("%INCLUDE%", template_file[i]) == 0) {
+            for (int j = 0; j < includes_count; j++)
+                fprintf(f, "#include %s\n", includes[j]);
+            continue;
+        }
 
-        fprintf(fp, "%s\n", );
+        fprintf(f, "%s\n", template_file[i]);
     }
 
     fclose(f);
@@ -84,18 +91,25 @@ void write_file(char* path)
 int main(int argc, char** argv)
 {
     if (argc != 3) {
-        printf("usage: ctemplate path/to/types.ctypes path/to/template_file.[ct,ht]\n");
+        printf("usage: ctemplate path/to/types.ctypes "
+               "path/to/template_file.[ct,ht]\n");
         return 0;
     }
 
+    char* types_file_path = argv[1];
     char* template_file_path = argv[2];
 
-    populate_types_and_includes(argv[1]);
-    read_template_file(argv[2]);
+    populate_types_and_includes(types_file_path);
+    read_template_file(template_file_path);
 
     char out_path[256];
-    int len = get_out_filename(out_path, argv[2]);
-    out_path[len] = '\0';
+    int len = get_out_filename(out_path, template_file_path);
+    char* write_path = malloc(len);
+    memcpy(write_path, out_path, len);
+
+    write_file(out_path);
+
+    free(write_path);
 
     return 0;
 }

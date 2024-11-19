@@ -1,0 +1,13 @@
+Checks: >
+  -*,
+  google-*,
+  -google-readability-braces-around-statements,
+  -google-readability-todo,
+  portability-*,
+  performance-*
+
+WarningsAsErrors: >
+  -*,
+  google-*,
+  portability-*,
+  performance-*
