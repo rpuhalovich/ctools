@@ -1,5 +1,9 @@
+INCLUDE <math.h>
+INCLUDE <string.h>
+INCLUDE <stdlib.h>
+
 TYPE int
 TYPE float
-
-INCLUDE <yeet.h>
+TYPE char
+TYPE double
 TYPE Line

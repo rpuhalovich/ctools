@@ -1,7 +1,6 @@
 #include "array.h"
 
 %TEMPLATE_BEGIN%
-
 %TYPE%Array* new%TYPE%Array()
 {
     %TYPE%_Array* a = malloc(sizeof(%TYPE%_Array));
@@ -15,5 +14,4 @@ void free%TYPE%Array(%TYPE%_Array* a)
     free(a->items);
     free(a);
 }
-
 %TEMPLATE_END%

@@ -119,12 +119,14 @@ void write_file(char* path)
                         }
                     }
 
-                    if (s < q) {
+                    if (s < q)
                         write_string_to_file(f, template_file[j] + s, q - s);
-                        write_string_to_file(f, "\n", 1);
-                    }
+
+                    write_string_to_file(f, "\n", 1);
                 }
 
+                if (k < types_count - 1)
+                    write_string_to_file(f, "\n", 1);
                 template_end_index = j;
             }
 

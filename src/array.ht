@@ -4,7 +4,6 @@
 %INCLUDE%
 
 %TEMPLATE_BEGIN%
-
 typedef struct {
     %TYPE%* items;
     int length;
@@ -13,8 +12,7 @@ typedef struct {
 
 %TYPE%Array* new%TYPE%Array();
 
-void free%TYPE%Array(%TYPE%_Array* a);
-
+void free%TYPE%Array(%TYPE%Array* a);
 %TEMPLATE_END%
 
 #endif // ARRAY_H
