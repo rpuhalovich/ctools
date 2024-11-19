@@ -13,8 +13,9 @@ release:
 	cmake -S . -B release -DCMAKE_BUILD_TYPE=Release -G Ninja
 	cmake --build release --config Release
 
-preprocess:
-	find src -iname "*.ht" -o -iname "*.ct" | xargs -I % ./build/ctemplate ./src/types.ctypes %
+ctemplate:
+	./build/ctemplate ./src/array.ctypes ./src/array.ht
+	./build/ctemplate ./src/array.ctypes ./src/array.ct
 
 format:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-format -i --style=file

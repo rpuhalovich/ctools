@@ -90,7 +90,6 @@ void write_file(char* path)
         if (strcmp("%INCLUDE%", template_file[i]) == 0) {
             for (int j = 0; j < includes_count; j++)
                 fprintf(f, "#include %s\n", includes[j]);
-
             continue;
         }
 
@@ -128,7 +127,6 @@ void write_file(char* path)
             }
 
             i = template_end_index;
-
             continue;
         }
 
@@ -152,8 +150,7 @@ int main(int argc, char** argv)
     read_template_file(template_file_path);
 
     char out_path[256];
-    int len = get_out_filename(out_path, template_file_path);
-
+    get_out_filename(out_path, template_file_path);
     write_file(out_path);
 
     return 0;
