@@ -1,15 +1,16 @@
 #include "array_gen.h"
 
 %TEMPLATE_BEGIN%
-%TYPE%Array* new%TYPE%Array()
+Array_%TYPE%* newArray_%TYPE%()
 {
-    %TYPE%Array* a = malloc(sizeof(%TYPE%Array));
+    Array_%TYPE%* a = malloc(sizeof(Array_%TYPE%));
     a->items = malloc(sizeof(%TYPE%));
     a->length = 1;
     a->capacity = 1;
+    return a;
 }
 
-void free%TYPE%Array(%TYPE%Array* a)
+void freeArray_%TYPE%(Array_%TYPE%* a)
 {
     free(a->items);
     free(a);
