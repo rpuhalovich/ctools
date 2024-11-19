@@ -1,6 +1,6 @@
 INCLUDE <math.h>
-INCLUDE <string.h>
 INCLUDE <stdlib.h>
+INCLUDE <string.h>
 
 TYPE int
 TYPE float

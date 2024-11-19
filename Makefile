@@ -1,4 +1,4 @@
-build:
+build: preprocess
 	cmake --build build
 
 ninja:

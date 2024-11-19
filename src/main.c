@@ -19,7 +19,6 @@ void write_file(char* path);
 void write_string_to_file(FILE* f, char* str, int strlen);
 
 char _tmpstr[MAX_LINE_LEN];
-
 void write_string_to_file(FILE* f, char* str, int strlen)
 {
     memcpy(_tmpstr, str, strlen);
@@ -108,8 +107,7 @@ void write_file(char* path)
 
                     int s = 0, q = 0;
                     for (; q < len; q++) {
-                        if (template_file[j][q] == '%' &&
-                            strncmp("%TYPE%", template_file[j] + q, typestrlen) == 0) {
+                        if (template_file[j][q] == '%' && strncmp("%TYPE%", template_file[j] + q, typestrlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
                             write_string_to_file(f, types[k], typestrlen);
                             q += typetemplatestrlen;
@@ -143,8 +141,7 @@ void write_file(char* path)
 int main(int argc, char** argv)
 {
     if (argc != 3) {
-        printf("usage: ctemplate path/to/types.ctypes "
-               "path/to/template_file.[ct,ht]\n");
+        printf("usage: ctemplate path/to/types.ctypes path/to/template_file.[ct,ht]\n");
         return 0;
     }
 
