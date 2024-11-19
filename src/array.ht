@@ -4,15 +4,17 @@
 %INCLUDE%
 
 %TEMPLATE_BEGIN%
+
 typedef struct {
     %TYPE%* items;
     int length;
     int capacity;
-} %TYPE%_Array;
+} %TYPE%Array;
 
-%TYPE%_Array* new%TYPE%Array();
+%TYPE%Array* new%TYPE%Array();
 
 void free%TYPE%Array(%TYPE%_Array* a);
+
 %TEMPLATE_END%
 
 #endif // ARRAY_H

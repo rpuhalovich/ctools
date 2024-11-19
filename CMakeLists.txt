@@ -7,5 +7,5 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DRELEASE -O3")
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(EXTERN_DIR "${CMAKE_SOURCE_DIR}/extern")
 
-file(GLOB_RECURSE src ${SRC_DIR}/*.c ${SRC_DIR}/*.h)
+file(GLOB_RECURSE src ${SRC_DIR}/main.c)
 add_executable(${PROJECT_NAME} ${src})

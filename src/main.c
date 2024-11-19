@@ -17,6 +17,21 @@ int template_end = 0;
 char out_file_name[256];
 int out_file_name_length = 0;
 
+void populate_types_and_includes(char* path);
+void read_template_file(char* path);
+int get_out_filename(char* out_path, char* path);
+void write_file(char* path);
+void write_string_to_file(FILE* f, char* str, int strlen);
+
+char _tmpstr[MAX_LINE_LEN];
+
+void write_string_to_file(FILE* f, char* str, int strlen)
+{
+    memset(_tmpstr, 0, MAX_LINE_LEN);
+    memcpy(_tmpstr, str, strlen);
+    fprintf(f, "%s", _tmpstr);
+}
+
 void populate_types_and_includes(char* path)
 {
     FILE* f = fopen(path, "r");
@@ -79,6 +94,42 @@ void write_file(char* path)
         if (strcmp("%INCLUDE%", template_file[i]) == 0) {
             for (int j = 0; j < includes_count; j++)
                 fprintf(f, "#include %s\n", includes[j]);
+            continue;
+        }
+
+        if (strcmp("%TEMPLATE_BEGIN%", template_file[i]) == 0) {
+            int typetemplatestrlen = strlen("%TYPE%");
+            int template_end_index = 0;
+
+            for (int k = 0; k < types_count; k++) {
+                int typestrlen = strlen(types[k]);
+
+                int j = i + 1;
+                for (; strcmp("%TEMPLATE_END%", template_file[j]) != 0; j++) {
+                    int len = strlen(template_file[j]);
+
+                    int s = 0, q = 0;
+                    for (; q < len; q++) {
+                        if (template_file[j][q] == '%' &&
+                            strncmp("%TYPE%", template_file[j] + q, typestrlen) == 0) {
+                            write_string_to_file(f, template_file[j] + s, q - s);
+                            write_string_to_file(f, types[k], typestrlen);
+                            q += typetemplatestrlen;
+                            s = q;
+                        }
+                    }
+
+                    if (s < q) {
+                        write_string_to_file(f, template_file[j] + s, q - s);
+                        write_string_to_file(f, "\n", 1);
+                    }
+                }
+
+                template_end_index = j;
+            }
+
+            i = template_end_index;
+
             continue;
         }
 

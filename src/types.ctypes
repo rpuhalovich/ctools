@@ -1,5 +1,5 @@
 TYPE int
 TYPE float
 
-INCLUDE "line.h"
+INCLUDE <yeet.h>
 TYPE Line
