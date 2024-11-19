@@ -11,11 +11,6 @@ int includes_count = 0;
 #define MAX_LINE_LEN 512
 char template_file[10000][MAX_LINE_LEN];
 int template_file_count = 0;
-int template_begin = 0;
-int template_end = 0;
-
-char out_file_name[256];
-int out_file_name_length = 0;
 
 void populate_types_and_includes(char* path);
 void read_template_file(char* path);
@@ -27,8 +22,8 @@ char _tmpstr[MAX_LINE_LEN];
 
 void write_string_to_file(FILE* f, char* str, int strlen)
 {
-    memset(_tmpstr, 0, MAX_LINE_LEN);
     memcpy(_tmpstr, str, strlen);
+    _tmpstr[strlen] = '\0';
     fprintf(f, "%s", _tmpstr);
 }
 
@@ -94,6 +89,7 @@ void write_file(char* path)
         if (strcmp("%INCLUDE%", template_file[i]) == 0) {
             for (int j = 0; j < includes_count; j++)
                 fprintf(f, "#include %s\n", includes[j]);
+
             continue;
         }
 
@@ -127,6 +123,7 @@ void write_file(char* path)
 
                 if (k < types_count - 1)
                     write_string_to_file(f, "\n", 1);
+
                 template_end_index = j;
             }
 

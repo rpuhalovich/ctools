@@ -11,7 +11,6 @@ typedef struct {
 } %TYPE%Array;
 
 %TYPE%Array* new%TYPE%Array();
-
 void free%TYPE%Array(%TYPE%Array* a);
 %TEMPLATE_END%
 
