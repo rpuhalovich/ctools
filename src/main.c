@@ -105,11 +105,20 @@ void write_file(char* path)
         }
 
         if (strcmp("%TEMPLATE_BEGIN%", template_file[i]) == 0) {
-            int typetemplatestrlen = strlen("%TYPE%");
+            int type_template_strlen = strlen("%TYPE%");
+            int type_template_np_strlen = strlen("%TYPENP%");
             int template_end_index = 0;
 
             for (int k = 0; k < types_count; k++) {
                 int typestrlen = strlen(types[k]);
+
+                int type_ptr_count = 0;
+                for (int j = 0; j < typestrlen; j++) {
+                    if (types[k][j] == '*')
+                        type_ptr_count++;
+                }
+
+                char* pstr = "pppppppp";
 
                 int j = i + 1;
                 for (; strcmp("%TEMPLATE_END%", template_file[j]) != 0; j++) {
@@ -117,10 +126,20 @@ void write_file(char* path)
 
                     int s = 0, q = 0;
                     for (; q < len; q++) {
-                        if (template_file[j][q] == '%' && strncmp("%TYPE%", template_file[j] + q, typetemplatestrlen) == 0) {
+                        if (template_file[j][q] == '%' && strncmp("%TYPE%", template_file[j] + q, type_template_strlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
                             write_string_to_file(f, types[k], typestrlen);
-                            q += typetemplatestrlen;
+                            q += type_template_strlen;
+                            s = q;
+                        }
+
+                        if (template_file[j][q] == '%' && strncmp("%TYPENP%", template_file[j] + q, type_template_np_strlen) == 0) {
+                            write_string_to_file(f, template_file[j] + s, q - s);
+
+                            write_string_to_file(f, pstr, type_ptr_count);
+                            write_string_to_file(f, types[k], typestrlen - type_ptr_count);
+
+                            q += type_template_np_strlen;
                             s = q;
                         }
                     }
