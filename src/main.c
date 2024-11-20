@@ -117,7 +117,7 @@ void write_file(char* path)
 
                     int s = 0, q = 0;
                     for (; q < len; q++) {
-                        if (template_file[j][q] == '%' && strncmp("%TYPE%", template_file[j] + q, typestrlen) == 0) {
+                        if (template_file[j][q] == '%' && strncmp("%TYPE%", template_file[j] + q, typetemplatestrlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
                             write_string_to_file(f, types[k], typestrlen);
                             q += typetemplatestrlen;
