@@ -1,4 +1,5 @@
 build/
+gen/
 release/
 xcode/
 cmake-debug-build/

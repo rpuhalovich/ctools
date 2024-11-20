@@ -14,6 +14,8 @@ int includes_count = 0;
 char template_file[10000][MAX_LINE_LEN];
 int template_file_count = 0;
 
+#define CEMPTLATE_DIR "./gen"
+
 void populate_types_and_includes(char* path);
 void read_template_file(char* path);
 void write_file(char* path);
@@ -84,11 +86,7 @@ int get_out_filename_dir(char* out_path, char* path, char* dir)
 
     memcpy(str, path + i + 1, sizeof(char) * (len - i - 4));
 
-    if (dir[strlen(dir)] == '/') {
-        sprintf(out_path, "%s%s.%c", dir, str, path[len - 2]);
-    } else {
-        sprintf(out_path, "%s/%s.%c", dir, str, path[len - 2]);
-    }
+    sprintf(out_path, "%s/%s.%c", dir, str, path[len - 2]);
 
     return strlen(out_path);
 }
@@ -152,7 +150,7 @@ void write_file(char* path)
 int main(int argc, char** argv)
 {
     if (argc != 3)
-        return 0;
+        return 1;
 
     char* types_file_path = argv[1];
     char* template_file_path = argv[2];
@@ -160,10 +158,10 @@ int main(int argc, char** argv)
     populate_types_and_includes(types_file_path);
     read_template_file(template_file_path);
 
-    mkdir("./ctemplate", 0777);
+    mkdir(CEMPTLATE_DIR, 0777);
 
     char out_path[256];
-    get_out_filename_dir(out_path, template_file_path, "./ctemplate");
+    get_out_filename_dir(out_path, template_file_path, CEMPTLATE_DIR);
 
     write_file(out_path);
 

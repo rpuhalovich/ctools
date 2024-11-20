@@ -24,7 +24,7 @@ tidy:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-tidy
 
 clean:
-	rm -rf build release xcode ctemplate tags
+	rm -rf build release xcode gen tags
 
 .PHONY: build ninja release format tidy clean ctemplate
 .SILENT:
