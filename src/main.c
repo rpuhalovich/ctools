@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 char types[128][64];
 int types_count = 0;
@@ -14,9 +16,9 @@ int template_file_count = 0;
 
 void populate_types_and_includes(char* path);
 void read_template_file(char* path);
-int get_out_filename(char* out_path, char* path);
 void write_file(char* path);
 void write_string_to_file(FILE* f, char* str, int strlen);
+int get_out_filename_dir(char* out_path, char* path, char* dir);
 
 char _tmpstr[MAX_LINE_LEN];
 void write_string_to_file(FILE* f, char* str, int strlen)
@@ -70,13 +72,24 @@ void read_template_file(char* path)
     fclose(f);
 }
 
-int get_out_filename(char* out_path, char* path)
+int get_out_filename_dir(char* out_path, char* path, char* dir)
 {
     int len = strlen(path);
     char str[256];
     memset(str, 0, sizeof(str));
-    memcpy(str, path, sizeof(char) * (len - 3));
-    sprintf(out_path, "%s_gen.%c", str, path[len - 2]);
+
+    int i = len;
+    for (; i >= 0 && path[i] != '/'; i--) {
+    }
+
+    memcpy(str, path + i + 1, sizeof(char) * (len - i - 4));
+
+    if (dir[strlen(dir)] == '/') {
+        sprintf(out_path, "%s%s.%c", dir, str, path[len - 2]);
+    } else {
+        sprintf(out_path, "%s/%s.%c", dir, str, path[len - 2]);
+    }
+
     return strlen(out_path);
 }
 
@@ -138,10 +151,8 @@ void write_file(char* path)
 
 int main(int argc, char** argv)
 {
-    if (argc != 3) {
-        printf("usage: ctemplate path/to/types.ctypes path/to/template_file.[ct,ht]\n");
+    if (argc != 3)
         return 0;
-    }
 
     char* types_file_path = argv[1];
     char* template_file_path = argv[2];
@@ -149,8 +160,11 @@ int main(int argc, char** argv)
     populate_types_and_includes(types_file_path);
     read_template_file(template_file_path);
 
+    mkdir("./ctemplate", 0777);
+
     char out_path[256];
-    get_out_filename(out_path, template_file_path);
+    get_out_filename_dir(out_path, template_file_path, "./ctemplate");
+
     write_file(out_path);
 
     return 0;

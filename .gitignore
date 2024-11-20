@@ -12,8 +12,7 @@ compile_commands.json
 tags
 
 # Preprocessed files
-*_gen.c
-*_gen.h
+ctemplate/
 
 # Prerequisites
 *.d

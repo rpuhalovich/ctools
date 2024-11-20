@@ -1,4 +1,4 @@
-#include "array_gen.h"
+#include "array.h"
 
 %TEMPLATE_BEGIN%
 Array_%TYPE%* newArray_%TYPE%()
