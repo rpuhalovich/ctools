@@ -10,8 +10,8 @@ typedef struct {
     int capacity;
 } Array_%TYPENP%;
 
-Array_%TYPE%* newArray_%TYPENP%();
-void freeArray_%TYPENP%(Array_%TYPE%* a);
+Array_%TYPENP%* newArray_%TYPENP%();
+void freeArray_%TYPENP%(Array_%TYPENP%* a);
 %TEMPLATE_END%
 
 #endif // ARRAY_H
