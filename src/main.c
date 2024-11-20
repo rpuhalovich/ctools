@@ -14,7 +14,7 @@ int includes_count = 0;
 char template_file[10000][MAX_LINE_LEN];
 int template_file_count = 0;
 
-#define CEMPTLATE_DIR "./gen"
+#define CTEMPLATE_DIR "./gen"
 
 void populate_types_and_includes(char* path);
 void read_template_file(char* path);
@@ -158,10 +158,10 @@ int main(int argc, char** argv)
     populate_types_and_includes(types_file_path);
     read_template_file(template_file_path);
 
-    mkdir(CEMPTLATE_DIR, 0777);
+    mkdir(CTEMPLATE_DIR, 0777);
 
     char out_path[256];
-    get_out_filename_dir(out_path, template_file_path, CEMPTLATE_DIR);
+    get_out_filename_dir(out_path, template_file_path, CTEMPLATE_DIR);
 
     write_file(out_path);
 
