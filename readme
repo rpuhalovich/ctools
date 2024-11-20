@@ -1,1 +1,4 @@
 ctemplate
+
+todo:
+- [ ] construct out file in memory for single sys call
