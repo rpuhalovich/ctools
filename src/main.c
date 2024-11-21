@@ -2,19 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_LINE_LEN 512
+#define PSTR "pppppppp"
+
 char types[128][64];
 int types_count = 0;
 
 char includes[128][64];
 int includes_count = 0;
 
-#define MAX_LINE_LEN 512
 char template_file[10000][MAX_LINE_LEN];
 int template_file_line_count = 0;
-
-#define CTEMPLATE_DIR "./gen"
-
-char* pstr = "pppppppp";
 
 void read_types_file(char* path);
 void read_template_file(char* path);
@@ -118,7 +116,7 @@ void write_file(char* path)
 
                         if (strncmp("%TYPENP%", template_file[j] + q, type_template_np_strlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
-                            write_string_to_file(f, pstr, type_ptr_count);
+                            write_string_to_file(f, PSTR, type_ptr_count);
                             write_string_to_file(f, types[k], typestrlen - type_ptr_count);
                             q += type_template_np_strlen;
                             s = q;
