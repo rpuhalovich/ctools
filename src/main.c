@@ -80,8 +80,14 @@ void write_file(char* path)
 
     for (int i = 0; i < template_file_line_count; i++) {
         if (strcmp("%INCLUDE%", template_file[i]) == 0) {
+            if (includes_count == 0) {
+                i++;
+                continue;
+            }
+
             for (int j = 0; j < includes_count; j++)
                 fprintf(f, "#include %s\n", includes[j]);
+
             continue;
         }
 

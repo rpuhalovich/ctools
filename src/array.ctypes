@@ -1,7 +1,3 @@
-INCLUDE <math.h>
-INCLUDE <stdlib.h>
-INCLUDE <string.h>
-
 TYPE int***
 TYPE Buffer*
 
