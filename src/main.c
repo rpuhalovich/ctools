@@ -10,7 +10,7 @@ int includes_count = 0;
 
 #define MAX_LINE_LEN 512
 char template_file[10000][MAX_LINE_LEN];
-int template_file_count = 0;
+int template_file_line_count = 0;
 
 #define CTEMPLATE_DIR "./gen"
 
@@ -65,7 +65,7 @@ void read_template_file(char* path)
     size_t linecap = 0;
     ssize_t linelen;
     while ((linelen = getline(&line, &linecap, f)) > 0)
-        memcpy(template_file[template_file_count++], line, linelen - 1);
+        memcpy(template_file[template_file_line_count++], line, linelen - 1);
 
     free(line);
     fclose(f);
@@ -77,7 +77,7 @@ void write_file(char* path)
     if (f == NULL)
         return;
 
-    for (int i = 0; i < template_file_count; i++) {
+    for (int i = 0; i < template_file_line_count; i++) {
         if (strcmp("%INCLUDE%", template_file[i]) == 0) {
             for (int j = 0; j < includes_count; j++)
                 fprintf(f, "#include %s\n", includes[j]);
@@ -101,24 +101,25 @@ void write_file(char* path)
                 char* pstr = "pppppppp";
 
                 int j = i + 1;
-                for (; strcmp("%TEMPLATE_END%", template_file[j]) != 0; j++) {
+                for (; strcmp("%TEMPLATE_END%", template_file[j]) != 0 && j < template_file_line_count; j++) {
                     int len = strlen(template_file[j]);
 
                     int s = 0, q = 0;
                     for (; q < len; q++) {
-                        if (template_file[j][q] == '%' && strncmp("%TYPE%", template_file[j] + q, type_template_strlen) == 0) {
+                        if (template_file[j][q] != '%')
+                            continue;
+
+                        if (strncmp("%TYPE%", template_file[j] + q, type_template_strlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
                             write_string_to_file(f, types[k], typestrlen);
                             q += type_template_strlen;
                             s = q;
                         }
 
-                        if (template_file[j][q] == '%' && strncmp("%TYPENP%", template_file[j] + q, type_template_np_strlen) == 0) {
+                        if (strncmp("%TYPENP%", template_file[j] + q, type_template_np_strlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
-
                             write_string_to_file(f, pstr, type_ptr_count);
                             write_string_to_file(f, types[k], typestrlen - type_ptr_count);
-
                             q += type_template_np_strlen;
                             s = q;
                         }
