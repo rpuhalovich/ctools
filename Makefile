@@ -14,8 +14,9 @@ release:
 	cmake --build release --config Release
 
 ctemplate:
-	./build/ctemplate ./src/array.ctypes ./src/array.ht
-	./build/ctemplate ./src/array.ctypes ./src/array.ct
+	mkdir -p ./gen
+	./build/ctemplate ./src/array.ctypes ./src/array.ht ./gen/array.h
+	./build/ctemplate ./src/array.ctypes ./src/array.ct ./gen/array.c
 
 format:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-format -i --style=file

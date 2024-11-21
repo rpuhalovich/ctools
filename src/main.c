@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 
 char types[128][64];
 int types_count = 0;
@@ -15,11 +14,10 @@ int template_file_count = 0;
 
 #define CTEMPLATE_DIR "./gen"
 
-void populate_types_and_includes(char* path);
+void read_types_file(char* path);
 void read_template_file(char* path);
 void write_file(char* path);
 void write_string_to_file(FILE* f, char* str, int strlen);
-int get_out_filename_dir(char* out_path, char* path, char* dir);
 
 char _tmpstr[MAX_LINE_LEN];
 void write_string_to_file(FILE* f, char* str, int strlen)
@@ -29,7 +27,7 @@ void write_string_to_file(FILE* f, char* str, int strlen)
     fprintf(f, "%s", _tmpstr);
 }
 
-void populate_types_and_includes(char* path)
+void read_types_file(char* path)
 {
     FILE* f = fopen(path, "r");
     if (f == NULL)
@@ -71,23 +69,6 @@ void read_template_file(char* path)
 
     free(line);
     fclose(f);
-}
-
-int get_out_filename_dir(char* out_path, char* path, char* dir)
-{
-    int len = strlen(path);
-    char str[256];
-    memset(str, 0, sizeof(str));
-
-    int i = len;
-    for (; i >= 0 && path[i] != '/'; i--) {
-    }
-
-    memcpy(str, path + i + 1, sizeof(char) * (len - i - 4));
-
-    sprintf(out_path, "%s/%s.%c", dir, str, path[len - 2]);
-
-    return strlen(out_path);
 }
 
 void write_file(char* path)
@@ -167,21 +148,16 @@ void write_file(char* path)
 
 int main(int argc, char** argv)
 {
-    if (argc != 3)
+    if (argc != 4)
         return 1;
 
     char* types_file_path = argv[1];
     char* template_file_path = argv[2];
+    char* out_file_path = argv[3];
 
-    populate_types_and_includes(types_file_path);
+    read_types_file(types_file_path);
     read_template_file(template_file_path);
-
-    mkdir(CTEMPLATE_DIR, 0777);
-
-    char out_path[256];
-    get_out_filename_dir(out_path, template_file_path, CTEMPLATE_DIR);
-
-    write_file(out_path);
+    write_file(out_file_path);
 
     return 0;
 }
