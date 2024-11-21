@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_TEMPLATE_LEN 10000
 #define MAX_LINE_LEN 512
 #define PSTR "pppppppp"
 
@@ -64,7 +65,7 @@ void read_template_file(char* path)
     char* line = NULL;
     size_t linecap = 0;
     ssize_t linelen;
-    while ((linelen = getline(&line, &linecap, f)) > 0)
+    while ((linelen = getline(&line, &linecap, f)) > 0 && template_file_line_count < MAX_TEMPLATE_LEN)
         memcpy(template_file[template_file_line_count++], line, linelen - 1);
 
     free(line);
