@@ -14,6 +14,8 @@ int template_file_line_count = 0;
 
 #define CTEMPLATE_DIR "./gen"
 
+char* pstr = "pppppppp";
+
 void read_types_file(char* path);
 void read_template_file(char* path);
 void write_file(char* path);
@@ -97,8 +99,6 @@ void write_file(char* path)
                     if (types[k][j] == '*')
                         type_ptr_count++;
                 }
-
-                char* pstr = "pppppppp";
 
                 int j = i + 1;
                 for (; strcmp("%TEMPLATE_END%", template_file[j]) != 0 && j < template_file_line_count; j++) {
