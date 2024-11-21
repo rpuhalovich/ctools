@@ -32,7 +32,7 @@ void read_types_file(char* path)
 {
     FILE* f = fopen(path, "r");
     if (f == NULL)
-        return;
+        exit(1);
 
     char* line = NULL;
     size_t linecap = 0;
@@ -60,7 +60,7 @@ void read_template_file(char* path)
 {
     FILE* f = fopen(path, "r");
     if (f == NULL)
-        return;
+        exit(1);
 
     char* line = NULL;
     size_t linecap = 0;
@@ -149,7 +149,7 @@ void write_file(char* path)
 int main(int argc, char** argv)
 {
     if (argc != 4)
-        return 1;
+        return 2;
 
     char* types_file_path = argv[1];
     char* template_file_path = argv[2];
