@@ -90,10 +90,10 @@ void write_file(char* path)
             int template_end_index = 0;
 
             for (int k = 0; k < types_count; k++) {
-                int typestrlen = strlen(types[k]);
+                int type_strlen = strlen(types[k]);
 
                 int type_ptr_count = 0;
-                for (int j = 0; j < typestrlen; j++) {
+                for (int j = 0; j < type_strlen; j++) {
                     if (types[k][j] == '*')
                         type_ptr_count++;
                 }
@@ -109,7 +109,7 @@ void write_file(char* path)
 
                         if (strncmp("%TYPE%", template_file[j] + q, type_template_strlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
-                            write_string_to_file(f, types[k], typestrlen);
+                            write_string_to_file(f, types[k], type_strlen);
                             q += type_template_strlen;
                             s = q;
                         }
@@ -117,7 +117,7 @@ void write_file(char* path)
                         if (strncmp("%TYPENP%", template_file[j] + q, type_template_np_strlen) == 0) {
                             write_string_to_file(f, template_file[j] + s, q - s);
                             write_string_to_file(f, PSTR, type_ptr_count);
-                            write_string_to_file(f, types[k], typestrlen - type_ptr_count);
+                            write_string_to_file(f, types[k], type_strlen - type_ptr_count);
                             q += type_template_np_strlen;
                             s = q;
                         }
