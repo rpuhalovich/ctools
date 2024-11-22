@@ -13,6 +13,13 @@ release:
 	cmake -S . -B release -DCMAKE_BUILD_TYPE=Release -G Ninja
 	cmake --build release --config Release
 
+install: release
+	rm -f /usr/local/bin/ctemplate
+	cp ./release/ctemplate /usr/local/bin/ctemplate
+
+uninstall:
+	rm -f /usr/local/bin/ctemplate
+
 ctemplate:
 	mkdir -p ./gen
 	./build/ctemplate ./src/array.ctypes ./src/array.ht ./gen/array.h
@@ -27,5 +34,5 @@ tidy:
 clean:
 	rm -rf build release xcode gen tags
 
-.PHONY: build ninja release format tidy clean ctemplate
+.PHONY: build ninja release format tidy clean ctemplate install uninstall
 .SILENT:
