@@ -12,7 +12,7 @@ int types_count = 0;
 char includes[128][64];
 int includes_count = 0;
 
-char template_file[10000][MAX_LINE_LEN];
+char template_file[MAX_TEMPLATE_LEN][MAX_LINE_LEN];
 int template_file_line_count = 0;
 
 void read_types_file(char* path);
@@ -155,15 +155,11 @@ void write_file(char* path)
 int main(int argc, char** argv)
 {
     if (argc != 4)
-        return 2;
+        return 1;
 
-    char* types_file_path = argv[1];
-    char* template_file_path = argv[2];
-    char* out_file_path = argv[3];
-
-    read_types_file(types_file_path);
-    read_template_file(template_file_path);
-    write_file(out_file_path);
+    read_types_file(argv[1]);
+    read_template_file(argv[2]);
+    write_file(argv[3);
 
     return 0;
 }
