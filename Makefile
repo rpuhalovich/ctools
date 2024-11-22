@@ -6,9 +6,6 @@ ninja:
 	cp build/compile_commands.json compile_commands.json
 	ctags -R .
 
-xcode:
-	cmake -S . -B xcode -G Xcode
-
 release:
 	cmake -S . -B release -DCMAKE_BUILD_TYPE=Release -G Ninja
 	cmake --build release --config Release
@@ -32,7 +29,7 @@ tidy:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-tidy
 
 clean:
-	rm -rf build release xcode gen tags
+	rm -rf build release gen tags
 
 .PHONY: build ninja release format tidy clean ctemplate install uninstall
 .SILENT:
