@@ -159,7 +159,7 @@ int main(int argc, char** argv)
 
     read_types_file(argv[1]);
     read_template_file(argv[2]);
-    write_file(argv[3);
+    write_file(argv[3]);
 
     return 0;
 }
