@@ -76,7 +76,7 @@ void write_file(char* path)
 {
     FILE* f = fopen(path, "w");
     if (f == NULL)
-        return;
+        exit(1);
 
     for (int i = 0; i < template_file_line_count; i++) {
         if (strcmp("%INCLUDE%", template_file[i]) == 0) {
