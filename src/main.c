@@ -37,8 +37,7 @@ void read_types_file(char* path)
             continue;
 
         int i = 0;
-        for (; line[i] != ' ' && i < linelen; i++) {
-        }
+        for (; line[i] != ' ' && i < linelen; i++);
 
         if (strncmp("INCLUDE", line, strlen("INCLUDE")) == 0)
             memcpy(includes[includes_count++], (char*)(line + i + 1), linelen - i - 2);
