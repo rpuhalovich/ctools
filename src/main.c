@@ -15,11 +15,6 @@ int includes_count = 0;
 char template_file[MAX_TEMPLATE_LEN][MAX_LINE_LEN];
 int template_file_line_count = 0;
 
-void read_types_file(char* path);
-void read_template_file(char* path);
-void write_file(char* path);
-void write_string_to_file(FILE* f, char* str, int strlen);
-
 char _tmpstr[MAX_LINE_LEN];
 void write_string_to_file(FILE* f, char* str, int strlen)
 {
