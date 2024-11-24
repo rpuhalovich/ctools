@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TEMPLATE_LEN 10000
+#define MAX_TEMPLATE_LEN 8192
 #define MAX_LINE_LEN 512
 #define PSTR "pppppppp"
 
