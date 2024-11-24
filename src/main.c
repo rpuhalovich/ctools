@@ -37,7 +37,7 @@ void read_types_file(char* path)
             continue;
 
         int i = 0;
-        for (; line[i] != ' '; i++) {
+        for (; line[i] != ' ' && i < linelen; i++) {
         }
 
         if (strncmp("INCLUDE", line, strlen("INCLUDE")) == 0)
