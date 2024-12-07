@@ -3,6 +3,8 @@
 
 %INCLUDE%
 
+%FORWARD%
+
 %TEMPLATE_BEGIN%
 typedef struct {
     %TYPE%* items;

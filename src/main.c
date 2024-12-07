@@ -2,15 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_TYPES_LEN 256
+#define MAX_TYPES_LINE_LEN 128
 #define MAX_TEMPLATE_LEN 8192
 #define MAX_LINE_LEN 512
 #define PSTR "pppppppp"
 
-char types[128][64];
+char types[MAX_TYPES_LEN][MAX_TYPES_LINE_LEN];
 int types_count = 0;
 
-char includes[128][64];
+char includes[MAX_TYPES_LEN][MAX_TYPES_LINE_LEN];
 int includes_count = 0;
+
+char forwards[MAX_TYPES_LEN][MAX_TYPES_LINE_LEN];
+int forwards_count = 0;
 
 char template_file[MAX_TEMPLATE_LEN][MAX_LINE_LEN];
 int template_file_line_count = 0;
@@ -37,10 +42,14 @@ void read_types_file(char* path)
             continue;
 
         int i = 0;
-        for (; line[i] != ' ' && i < linelen; i++);
+        for (; line[i] != ' ' && i < linelen; i++)
+            ;
 
         if (strncmp("INCLUDE", line, strlen("INCLUDE")) == 0)
             memcpy(includes[includes_count++], (char*)(line + i + 1), linelen - i - 2);
+
+        if (strncmp("FORWARD", line, strlen("FORWARD")) == 0)
+            memcpy(forwards[forwards_count++], (char*)(line + i + 1), linelen - i - 2);
 
         if (strncmp("TYPE", line, strlen("TYPE")) == 0)
             memcpy(types[types_count++], (char*)(line + i + 1), linelen - i - 2);
@@ -83,6 +92,20 @@ void write_file(char* path)
 
             for (int j = 0; j < includes_count; j++)
                 fprintf(f, "#include %s\n", includes[j]);
+
+            continue;
+        }
+
+        if (strcmp("%FORWARD%", template_file[i]) == 0) {
+            if (forwards_count == 0) {
+                i++;
+                continue;
+            }
+
+            for (int j = 0; j < forwards_count; j++) {
+                fprintf(f, "struct _%s;\n", forwards[j]);
+                fprintf(f, "typedef struct _%s %s;\n", forwards[j], forwards[j]);
+            }
 
             continue;
         }

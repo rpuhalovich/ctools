@@ -1,3 +1,7 @@
+INCLUDE "buffer.h"
+
+FORWARD Buffer
+
 TYPE int***
 TYPE Buffer*
 
