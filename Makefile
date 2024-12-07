@@ -1,13 +1,13 @@
 build:
 	cmake --build build
 
-ninja:
-	cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -G Ninja
+proj:
+	cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug
 	cp build/compile_commands.json compile_commands.json
 	ctags -R .
 
 release:
-	cmake -S . -B release -DCMAKE_BUILD_TYPE=Release -G Ninja
+	cmake -S . -B release -DCMAKE_BUILD_TYPE=Release
 	cmake --build release --config Release
 
 install: release
@@ -24,9 +24,6 @@ ctemplate:
 
 format:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-format -i --style=file
-
-tidy:
-	find src -iname "*.h" -o -iname "*.c" | xargs clang-tidy
 
 clean:
 	rm -rf build release gen tags
