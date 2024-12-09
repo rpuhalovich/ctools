@@ -14,7 +14,8 @@ int types_count = 0;
 char includes[MAX_TYPES_LEN][MAX_TYPES_LINE_LEN];
 int includes_count = 0;
 
-char forwards[MAX_TYPES_LEN][MAX_TYPES_LINE_LEN];
+char forwards_tag[MAX_TYPES_LEN][MAX_TYPES_LINE_LEN];
+char forwards_struct[MAX_TYPES_LEN][MAX_TYPES_LINE_LEN];
 int forwards_count = 0;
 
 char template_file[MAX_TEMPLATE_LEN][MAX_LINE_LEN];
@@ -42,14 +43,20 @@ void read_types_file(char* path)
             continue;
 
         int i = 0;
-        for (; line[i] != ' ' && i < linelen; i++)
-            ;
+        for (; line[i] != ' ' && i < linelen; i++);
 
         if (strncmp("INCLUDE", line, strlen("INCLUDE")) == 0)
             memcpy(includes[includes_count++], (char*)(line + i + 1), linelen - i - 2);
 
-        if (strncmp("FORWARD", line, strlen("FORWARD")) == 0)
-            memcpy(forwards[forwards_count++], (char*)(line + i + 1), linelen - i - 2);
+        if (strncmp("FORWARD", line, strlen("FORWARD")) == 0) {
+            int j = i + 1;
+            for (; line[j] != ' ' && j < linelen; j++);
+
+            memcpy(forwards_tag[forwards_count], (char*)(line + i + 1), j - i - 1);
+            memcpy(forwards_struct[forwards_count], (char*)(line + j + 1), linelen - j - 2);
+
+            forwards_count++;
+        }
 
         if (strncmp("TYPE", line, strlen("TYPE")) == 0)
             memcpy(types[types_count++], (char*)(line + i + 1), linelen - i - 2);
@@ -103,8 +110,8 @@ void write_file(char* path)
             }
 
             for (int j = 0; j < forwards_count; j++) {
-                fprintf(f, "struct _%s;\n", forwards[j]);
-                fprintf(f, "typedef struct _%s %s;\n", forwards[j], forwards[j]);
+                fprintf(f, "struct %s;\n", forwards_tag[j]);
+                fprintf(f, "typedef struct %s %s;\n", forwards_tag[j], forwards_struct[j]);
             }
 
             continue;

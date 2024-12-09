@@ -1,6 +1,6 @@
 INCLUDE "buffer.h"
 
-FORWARD Buffer
+FORWARD _Buffer Buffer
 
 TYPE int***
 TYPE Buffer*
