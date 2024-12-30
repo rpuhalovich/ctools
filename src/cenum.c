@@ -93,10 +93,12 @@ void write_implementation(char* dir)
         }
         fprintf(f, "        default: return \"UNDEFINED\";\n");
         fprintf(f, "    }\n");
-        fprintf(f, "}\n\n");
+        fprintf(f, "}\n");
+
+        if (i < decl_len - 1)
+            fprintf(f, "\n");
     }
 
-    fprintf(f, "#endif // %s\n", hfile_ifndef);
     fclose(f);
 }
 
@@ -127,6 +129,8 @@ void write_header(char* dir)
             fprintf(f, "    %s_%s,\n", decl_uppercase, decl_values[i][j]);
         fprintf(f, "    %s_END\n", decl_uppercase);
         fprintf(f, "} %s;\n\n", decl[i]);
+
+        fprintf(f, "const char* toString_%s(%s value);\n\n", decl[i], decl[i]);
     }
 
     fprintf(f, "#endif // %s\n", hfile_ifndef);
