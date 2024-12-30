@@ -23,6 +23,5 @@ format:
 clean:
 	rm -rf build release gen tags
 
-
 .PHONY: build proj release install remove format clean
 .SILENT:
