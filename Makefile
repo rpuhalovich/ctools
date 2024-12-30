@@ -2,20 +2,21 @@ build:
 	cmake --build build
 
 proj:
-	cmake -S . -B build
+	cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug
 
 release:
 	cmake -S . -B release -DCMAKE_BUILD_TYPE=Release
 	cmake --build release --config Release
 
 install: release
-	rm -f /usr/local/bin/ctemplate
 	cp ./release/ctemplate /usr/local/bin/ctemplate
-	echo "install /usr/local/bin/ctemplate"
+	cp ./release/cenum /usr/local/bin/cenum
+	echo "install ctools"
 
 remove:
 	rm -f /usr/local/bin/ctemplate
-	echo "remove /usr/local/bin/ctemplate"
+	rm -f /usr/local/bin/cenum
+	echo "remove ctools"
 
 format:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-format -i --style=file
