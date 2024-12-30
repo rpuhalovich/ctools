@@ -2,9 +2,7 @@ build:
 	cmake --build build
 
 proj:
-	cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug
-	cp build/compile_commands.json compile_commands.json
-	ctags -R .
+	cmake -S . -B build
 
 release:
 	cmake -S . -B release -DCMAKE_BUILD_TYPE=Release
@@ -13,14 +11,11 @@ release:
 install: release
 	rm -f /usr/local/bin/ctemplate
 	cp ./release/ctemplate /usr/local/bin/ctemplate
+	echo "install /usr/local/bin/ctemplate"
 
-uninstall:
+remove:
 	rm -f /usr/local/bin/ctemplate
-
-ctemplate:
-	mkdir -p ./gen
-	./build/ctemplate ./src/array.ctypes ./src/array.ht ./gen/array.h
-	./build/ctemplate ./src/array.ctypes ./src/array.ct ./gen/array.c
+	echo "remove /usr/local/bin/ctemplate"
 
 format:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-format -i --style=file
@@ -28,5 +23,6 @@ format:
 clean:
 	rm -rf build release gen tags
 
-.PHONY: build ninja release format tidy clean ctemplate install uninstall
+
+.PHONY: build proj release install remove format clean
 .SILENT:
