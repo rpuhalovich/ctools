@@ -38,5 +38,5 @@ format:
 clean:
 	rm -rf build release gen tags tmp
 
-.PHONY: build proj release install-ctools remove-ctools install-clang-tools remove-clang-tools format clean
+.PHONY: build proj release install-all remove-all install-ctools remove-ctools install-clang-tools remove-clang-tools format clean
 .SILENT:
