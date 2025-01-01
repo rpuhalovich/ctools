@@ -157,7 +157,7 @@ int main(int argc, char** argv)
     if (argc != 3)
         return 1;
 
-    size_t size = sizeof(unsigned char) * MAX_ENUM_VALUES * MAX_STRLEN * 2.0f;
+    size_t size = sizeof(unsigned char) * MAX_ENUM_VALUES * MAX_STRLEN * 2;
     pool = malloc(size);
     memset(pool, 0, size);
     ptr = pool;
