@@ -4,16 +4,18 @@
 #include <ctype.h>
 
 #define MAX_STRLEN 512
+#define MAX_ENUMS 512
+#define MAX_ENUM_VALUES 4096
 
 char cfile[MAX_STRLEN];
 char hfile[MAX_STRLEN];
 char hfile_ifndef[MAX_STRLEN];
 
 int decl_len = 0;
-char decl[MAX_STRLEN][MAX_STRLEN];
-char decl_values[MAX_STRLEN][MAX_STRLEN][MAX_STRLEN];
-int decl_values_lens[MAX_STRLEN];
-char prefix[MAX_STRLEN][MAX_STRLEN];
+char decl[MAX_ENUMS][MAX_STRLEN];
+char decl_values[MAX_ENUM_VALUES][MAX_STRLEN][MAX_STRLEN];
+int decl_values_lens[MAX_ENUM_VALUES];
+char prefix[MAX_ENUMS][MAX_STRLEN];
 
 void read_enum_file(char* path)
 {
