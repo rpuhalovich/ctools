@@ -98,7 +98,7 @@ void write_implementation(char* dir)
 
     char decl_full_name[MAX_STRLEN];
     for (int i = 0; i < decl_len; i++) {
-        fprintf(f, "const char* toString_%s(%s value)\n", decl[i], decl[i]);
+        fprintf(f, "char* toString_%s(%s value)\n", decl[i], decl[i]);
         fprintf(f, "{\n");
         fprintf(f, "    switch (value) {\n");
         for (int j = 0; j < decl_values_lens[i]; j++) {
@@ -142,7 +142,7 @@ void write_header(char* dir)
         fprintf(f, "    %sEND\n", prefix[i]);
         fprintf(f, "} %s;\n\n", decl[i]);
 
-        fprintf(f, "const char* toString_%s(%s value);\n\n", decl[i], decl[i]);
+        fprintf(f, "char* toString_%s(%s value);\n\n", decl[i], decl[i]);
     }
 
     fprintf(f, "#endif // %s\n", hfile_ifndef);
