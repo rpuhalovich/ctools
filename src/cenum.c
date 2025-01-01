@@ -5,7 +5,7 @@
 
 #define MAX_STRLEN 512
 #define MAX_ENUMS 512
-#define MAX_ENUM_VALUES 4096
+#define MAX_ENUM_VALUES 512
 
 char cfile[MAX_STRLEN];
 char hfile[MAX_STRLEN];
@@ -13,9 +13,11 @@ char hfile_ifndef[MAX_STRLEN];
 
 int decl_len = 0;
 char decl[MAX_ENUMS][MAX_STRLEN];
-char decl_values[MAX_ENUM_VALUES][MAX_STRLEN][MAX_STRLEN];
+char* decl_values[MAX_ENUM_VALUES][MAX_ENUM_VALUES];
 int decl_values_lens[MAX_ENUM_VALUES];
-char prefix[MAX_ENUMS][MAX_STRLEN];
+
+char prefix[MAX_ENUMS][MAX_ENUM_VALUES];
+char* optional_values[MAX_ENUM_VALUES][MAX_STRLEN];
 
 void read_enum_file(char* path)
 {
@@ -62,9 +64,19 @@ void read_enum_file(char* path)
         }
 
         if (strncmp("VALUE", line, strlen("VALUE")) == 0) {
+            int j = i + 1;
+            for (; line[j] != ' ' && j < linelen; j++);
+
             int cur_decl_index = decl_len - 1;
-            memcpy(decl_values[cur_decl_index][cur_value_index++], (char*)(line + i + 1), linelen - i - 2);
+            if (j == linelen) {
+                memcpy(decl_values[cur_decl_index][cur_value_index], (char*)(line + i + 1), linelen - i - 2);
+            } else {
+                memcpy(decl_values[cur_decl_index][cur_value_index], (char*)(line + i + 1), j - i - 1);
+                memcpy(optional_values[cur_decl_index][cur_value_index], (char*)(line + j + 1), linelen - j - 2);
+            }
+
             decl_values_lens[cur_decl_index]++;
+            cur_value_index++;
         }
     }
 
@@ -90,8 +102,13 @@ void write_implementation(char* dir)
         fprintf(f, "{\n");
         fprintf(f, "    switch (value) {\n");
         for (int j = 0; j < decl_values_lens[i]; j++) {
-            sprintf(decl_full_name, "%s%s", prefix[i], decl_values[i][j]);
-            fprintf(f, "        case (%s): return \"%s\";\n", decl_full_name, decl_full_name);
+            if (strlen(optional_values[i][j]) == 0) {
+                sprintf(decl_full_name, "%s%s", prefix[i], decl_values[i][j]);
+                fprintf(f, "        case (%s): return \"%s\";\n", decl_full_name, decl_full_name);
+            } else {
+                sprintf(decl_full_name, "%s%s", prefix[i], decl_values[i][j]);
+                fprintf(f, "        case (%s): return \"%s\";\n", decl_full_name, optional_values[i][j]);
+            }
         }
         fprintf(f, "        default: return \"UNDEFINED\";\n");
         fprintf(f, "    }\n");
@@ -137,12 +154,26 @@ int main(int argc, char** argv)
     if (argc != 3)
         return 1;
 
+    for (int i = 0; i < MAX_ENUMS; i++) {
+        for (int j = 0; j < MAX_ENUM_VALUES; j++) {
+            decl_values[i][j] = malloc(sizeof(char) * MAX_STRLEN);
+            optional_values[i][j] = malloc(sizeof(char) * MAX_STRLEN);
+        }
+    }
+
     read_enum_file(argv[1]);
     if (!strlen(cfile) || !strlen(hfile))
         return 2;
 
     write_header(argv[2]);
     write_implementation(argv[2]);
+
+    for (int i = 0; i < MAX_ENUMS; i++) {
+        for (int j = 0; j < MAX_ENUM_VALUES; j++) {
+            free(decl_values[i][j]);
+            free(optional_values[i][j]);
+        }
+    }
 
     return 0;
 }

@@ -36,7 +36,7 @@ format:
 	find src -iname "*.h" -o -iname "*.c" | xargs clang-format -i --style=file
 
 clean:
-	rm -rf build release gen tags tmp
+	rm -rf build release gen tags tmp compile_commands.json
 
 .PHONY: build proj release install-all remove-all install-ctools remove-ctools install-clang-tools remove-clang-tools format clean
 .SILENT:
