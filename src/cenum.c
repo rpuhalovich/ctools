@@ -7,6 +7,9 @@
 #define MAX_ENUMS 512
 #define MAX_ENUM_VALUES 512
 
+unsigned char* pool;
+unsigned char* ptr;
+
 char cfile[MAX_STRLEN];
 char hfile[MAX_STRLEN];
 char hfile_ifndef[MAX_STRLEN];
@@ -154,10 +157,18 @@ int main(int argc, char** argv)
     if (argc != 3)
         return 1;
 
+    size_t size = sizeof(unsigned char) * MAX_ENUM_VALUES * MAX_STRLEN * 2.0f;
+    pool = malloc(size);
+    memset(pool, 0, size);
+    ptr = pool;
+
     for (int i = 0; i < MAX_ENUMS; i++) {
         for (int j = 0; j < MAX_ENUM_VALUES; j++) {
-            decl_values[i][j] = malloc(sizeof(char) * MAX_STRLEN);
-            optional_values[i][j] = malloc(sizeof(char) * MAX_STRLEN);
+            decl_values[i][j] = (char*)ptr;
+            ptr += sizeof(char) * MAX_STRLEN;
+
+            optional_values[i][j] = (char*)ptr;
+            ptr += sizeof(char) * MAX_STRLEN;
         }
     }
 
@@ -168,12 +179,7 @@ int main(int argc, char** argv)
     write_header(argv[2]);
     write_implementation(argv[2]);
 
-    for (int i = 0; i < MAX_ENUMS; i++) {
-        for (int j = 0; j < MAX_ENUM_VALUES; j++) {
-            free(decl_values[i][j]);
-            free(optional_values[i][j]);
-        }
-    }
+    free(pool);
 
     return 0;
 }
