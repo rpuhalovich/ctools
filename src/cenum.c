@@ -3,10 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
-#define MAX_STRLEN 512
-#define MAX_FILE_STRLEN 512
-#define MAX_ENUMS 512
-#define MAX_ENUM_VALUES 512
+#define MAX_STRLEN 128
+#define MAX_FILE_STRLEN 128
+#define MAX_ENUMS 128
+#define MAX_ENUM_VALUES 128
 
 unsigned char* pool;
 unsigned char* ptr;
