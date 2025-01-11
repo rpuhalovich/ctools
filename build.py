@@ -1,5 +1,5 @@
-import shutil
 import os
+import shutil
 import subprocess
 import sys
 
@@ -7,8 +7,10 @@ def exe(cmd: str) -> None:
     subprocess.call(cmd.split());
 
 def mkdir(path: str) -> None:
-    if not os.path.exists(path):
-        os.makedirs(path)
+    if not os.path.exists(path): os.makedirs(path)
+
+def rmdir(path: str) -> None:
+    if os.path.exists(path): shutil.rmtree(path)
 
 def cp(source: str, destination: str) -> None:
     shutil.copy(source, destination)
@@ -35,8 +37,8 @@ def main(args: list[str]) -> None:
             cp("./release/cenum", "./bin/cenum")
 
     if args[0] == "clean":
-        shutil.rmtree("bin")
-        shutil.rmtree("build")
-        shutil.rmtree("release")
+        rmdir("bin")
+        rmdir("build")
+        rmdir("release")
 
 main(sys.argv[1:])

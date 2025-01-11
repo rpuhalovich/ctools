@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.28.3)
 project(ctools C)
-
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
 
 set(FILE_SRC ${CMAKE_SOURCE_DIR}/src/file.c ${CMAKE_SOURCE_DIR}/src/file.h)
 
