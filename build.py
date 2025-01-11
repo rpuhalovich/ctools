@@ -27,6 +27,7 @@ def main(args: list[str]) -> None:
     if args[0] == "install-all":
         main(["install-ctools"])
         main(["install-clang-tools"])
+        main(["install-cbuild"])
 
     if args[0] == "install-ctools":
         main(["release"])
@@ -60,9 +61,10 @@ def main(args: list[str]) -> None:
 
         rm("./LLVM-19.1.6-macOS-ARM64")
 
-    if args[0] == "install-build":
+    if args[0] == "install-cbuild":
         mkdir("./bin")
         cp("./scripts/cbuild", "./bin/cbuild")
+        cp("./scripts/cbuild.bat", "./bin/cbuild.bat")
 
     if args[0] == "build":
         exe("cmake --build build")
