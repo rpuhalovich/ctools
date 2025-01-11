@@ -36,7 +36,7 @@ int read_enum_file(char* path)
     char* line = NULL;
     size_t linecap = 0;
     size_t linelen;
-    while ((linelen = getline(&line, &linecap, f)) > 0) {
+    while ((linelen = zgetline(&line, &linecap, f)) > 0) {
         if (!linelen)
             continue;
 
