@@ -3,6 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "file.h"
+
 #define MAX_STRLEN 128
 #define MAX_FILE_STRLEN 128
 #define MAX_ENUMS 128
@@ -33,7 +35,7 @@ int read_enum_file(char* path)
 
     char* line = NULL;
     size_t linecap = 0;
-    ssize_t linelen;
+    size_t linelen;
     while ((linelen = getline(&line, &linecap, f)) > 0) {
         if (!linelen)
             continue;

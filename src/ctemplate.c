@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "file.h"
+
 #define MAX_TYPES_LEN 256
 #define MAX_TYPES_LINE_LEN 128
 #define MAX_TEMPLATE_LEN 8192
@@ -34,7 +36,7 @@ void read_types_file(char* path)
 
     char* line = NULL;
     size_t linecap = 0;
-    ssize_t linelen;
+    size_t linelen;
     while ((linelen = getline(&line, &linecap, f)) > 0) {
         if (!linelen)
             continue;
@@ -68,7 +70,7 @@ void read_template_file(char* path)
 
     char* line = NULL;
     size_t linecap = 0;
-    ssize_t linelen;
+    size_t linelen;
     while ((linelen = getline(&line, &linecap, f)) > 0 && template_file_line_count < MAX_TEMPLATE_LEN)
         memcpy(template_file[template_file_line_count++], line, linelen - 1);
 

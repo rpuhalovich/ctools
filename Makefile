@@ -12,8 +12,8 @@ install-all: install-ctools install-clang-tools
 
 install-ctools: release
 	mkdir -p ./bin
-	cp ./release/ctemplate ./bin/ctemplate
-	cp ./release/cenum ./bin/cenum
+	cp ./release/ctemplate ./bin/
+	cp ./release/cenum ./bin/
 
 install-clang-tools:
 	./scripts/clang-tools.sh
