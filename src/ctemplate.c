@@ -34,12 +34,9 @@ void read_types_file(char* path)
     if (f == NULL)
         exit(1);
 
-    char* line = NULL;
-    size_t linecap = 0;
-    size_t linelen;
-    while ((linelen = zgetline(&line, &linecap, f)) > 0) {
-        if (!linelen)
-            continue;
+    char line[MAX_LINE_LEN];
+    while (fgets(line, sizeof(line), f) != NULL) {
+        int linelen = strlen(line);
 
         int i = 0;
         for (; line[i] != ' ' && i < linelen; i++)
@@ -60,7 +57,6 @@ void read_types_file(char* path)
             memcpy(types[types_count++], (char*)(line + i + 1), linelen - i - 2);
     }
 
-    free(line);
     fclose(f);
 }
 
@@ -70,13 +66,12 @@ void read_template_file(char* path)
     if (f == NULL)
         exit(1);
 
-    char* line = NULL;
-    size_t linecap = 0;
-    size_t linelen;
-    while ((linelen = zgetline(&line, &linecap, f)) > 0 && template_file_line_count < MAX_TEMPLATE_LEN)
+    char line[MAX_LINE_LEN];
+    while (fgets(line, sizeof(line), f) != NULL && template_file_line_count < MAX_TEMPLATE_LEN) {
+        int linelen = strlen(line);
         memcpy(template_file[template_file_line_count++], line, linelen - 1);
+    }
 
-    free(line);
     fclose(f);
 }
 
