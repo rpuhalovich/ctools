@@ -43,21 +43,26 @@ def main(args: list[str]) -> None:
     if args[0] == "install-clang-tools":
         if sys.platform != "darwin": return
 
-        mkdir("bin")
-        mkdir("tmp")
+        mkdir("./bin")
+        mkdir("./tmp")
 
         if not os.path.exists("./tmp/LLVM-19.1.6-macOS-ARM64.tar.xz"):
             urllib.request.urlretrieve(
                 "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.6/LLVM-19.1.6-macOS-ARM64.tar.xz",
                 "LLVM-19.1.6-macOS-ARM64.tar.xz")
 
-        tar = tarfile.open("tmp/LLVM-19.1.6-macOS-ARM64.tar.xz")
+        tar = tarfile.open("./tmp/LLVM-19.1.6-macOS-ARM64.tar.xz")
         tar.extractall(filter="data")
         tar.close()
 
-        cp("LLVM-19.1.6-macOS-ARM64/bin/clang-format", "./bin/clang-format")
-        cp("LLVM-19.1.6-macOS-ARM64/bin/clang-tidy", "./bin/clang-tidy")
-        rm("LLVM-19.1.6-macOS-ARM64")
+        cp("./LLVM-19.1.6-macOS-ARM64/bin/clang-format", "./bin/clang-format")
+        cp("./LLVM-19.1.6-macOS-ARM64/bin/clang-tidy", "./bin/clang-tidy")
+
+        rm("./LLVM-19.1.6-macOS-ARM64")
+
+    if args[0] == "install-build":
+        mkdir("./bin")
+        cp("./scripts/cbuild", "./bin/cbuild")
 
     if args[0] == "build":
         exe("cmake --build build")

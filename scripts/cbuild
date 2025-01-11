@@ -1,0 +1,7 @@
+if command -v python 2>&1 >/dev/null; then
+    python build.py $@
+fi
+
+if command -v python3 2>&1 >/dev/null; then
+    python3 build.py $@
+fi
