@@ -24,6 +24,10 @@ def exeExists(exe: str) -> bool:
     return shutil.which(exe) != None
 
 def main(args: list[str]) -> None:
+    if len(args) == 0:
+        print("no args provided")
+        return
+
     if args[0] == "install-all":
         main(["install-ctools"])
         main(["install-clang-tools"])
