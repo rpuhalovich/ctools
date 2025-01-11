@@ -1,3 +1,4 @@
+import pathlib
 import os
 import shutil
 import subprocess
@@ -11,8 +12,10 @@ def exe(cmd: str) -> None:
 def mkdir(path: str) -> None:
     if not os.path.exists(path): os.makedirs(path)
 
-def rmdir(path: str) -> None:
-    if os.path.exists(path): shutil.rmtree(path)
+def rm(path: str) -> None:
+    if not os.path.exists(path): return
+    if os.path.isdir(path): shutil.rmtree(path)
+    else: os.remove(path)
 
 def cp(source: str, destination: str) -> None:
     shutil.copy(source, destination)
@@ -66,11 +69,16 @@ def main(args: list[str]) -> None:
 
         cp("LLVM-19.1.6-macOS-ARM64/bin/clang-format", "./bin/clang-format")
         cp("LLVM-19.1.6-macOS-ARM64/bin/clang-tidy", "./bin/clang-tidy")
-        rmdir("LLVM-19.1.6-macOS-ARM64")
+        rm("LLVM-19.1.6-macOS-ARM64")
+
+    if args[0] == "format":
+        paths = list(pathlib.Path('src').rglob('*.c')) + list(pathlib.Path('src').rglob('*.h'))
+        for path in paths:
+            exe("clang-format -i --style=file ./src/" + path.name)
 
     if args[0] == "clean":
-        rmdir("bin")
-        rmdir("build")
-        rmdir("release")
+        rm("build")
+        rm("release")
+        rm("compile_commands.json")
 
 main(sys.argv[1:])

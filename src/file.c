@@ -3,9 +3,10 @@
 
 #include "file.h"
 
-size_t zgetline(char** lineptr, size_t* n, FILE* stream) {
-    char *bufptr = NULL;
-    char *p = bufptr;
+size_t zgetline(char** lineptr, size_t* n, FILE* stream)
+{
+    char* bufptr = NULL;
+    char* p = bufptr;
     size_t size;
     int c;
 
@@ -31,7 +32,7 @@ size_t zgetline(char** lineptr, size_t* n, FILE* stream) {
     }
 
     p = bufptr;
-    while(c != EOF) {
+    while (c != EOF) {
         if ((p - bufptr) > (size - 1)) {
             size = size + 128;
             bufptr = realloc(bufptr, size);

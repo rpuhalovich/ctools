@@ -42,11 +42,13 @@ void read_types_file(char* path)
             continue;
 
         int i = 0;
-        for (; line[i] != ' ' && i < linelen; i++);
+        for (; line[i] != ' ' && i < linelen; i++)
+            ;
 
         if (strncmp("FORWARD", line, strlen("FORWARD")) == 0) {
             int j = i + 1;
-            for (; line[j] != ' ' && j < linelen; j++);
+            for (; line[j] != ' ' && j < linelen; j++)
+                ;
 
             memcpy(forwards_tag[forwards_count], (char*)(line + i + 1), j - i - 1);
             memcpy(forwards_struct[forwards_count], (char*)(line + j + 1), linelen - j - 2);

@@ -1,7 +1,7 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "file.h"
 
@@ -41,7 +41,8 @@ int read_enum_file(char* path)
             continue;
 
         int i = 0;
-        for (; line[i] != ' ' && i < linelen; i++);
+        for (; line[i] != ' ' && i < linelen; i++)
+            ;
 
         if (strncmp("CFILE", line, strlen("CFILE")) == 0)
             memcpy(cfile, (char*)(line + i + 1), linelen - i - 2);
@@ -60,7 +61,8 @@ int read_enum_file(char* path)
 
         if (strncmp("ENUM", line, strlen("ENUM")) == 0) {
             int j = i + 1;
-            for (; line[j] != ' ' && j < linelen; j++);
+            for (; line[j] != ' ' && j < linelen; j++)
+                ;
 
             memcpy(decl[decl_len], (char*)(line + i + 1), j - i - 1);
             memcpy(prefix[decl_len], (char*)(line + j + 1), linelen - j - 2);
@@ -71,7 +73,8 @@ int read_enum_file(char* path)
 
         if (strncmp("VALUE", line, strlen("VALUE")) == 0) {
             int j = i + 1;
-            for (; line[j] != ' ' && j < linelen; j++);
+            for (; line[j] != ' ' && j < linelen; j++)
+                ;
 
             int cur_decl_index = decl_len - 1;
             if (j == linelen) {
