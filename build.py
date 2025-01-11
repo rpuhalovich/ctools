@@ -24,21 +24,9 @@ def exeExists(exe: str) -> bool:
     return shutil.which(exe) != None
 
 def main(args: list[str]) -> None:
-    if args[0] == "all":
+    if args[0] == "install-all":
         main(["install-ctools"])
         main(["install-clang-tools"])
-
-    if args[0] == "build":
-        exe("cmake --build build")
-
-    if args[0] == "proj":
-        cmd = "cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug"
-        if exeExists("ninja"): cmd + " -G Ninja"
-        exe(cmd)
-
-    if args[0] == "release":
-        exe("cmake -S . -B release -DCMAKE_BUILD_TYPE=Release")
-        exe("cmake --build release --config Release")
 
     if args[0] == "install-ctools":
         main(["release"])
@@ -70,6 +58,18 @@ def main(args: list[str]) -> None:
         cp("LLVM-19.1.6-macOS-ARM64/bin/clang-format", "./bin/clang-format")
         cp("LLVM-19.1.6-macOS-ARM64/bin/clang-tidy", "./bin/clang-tidy")
         rm("LLVM-19.1.6-macOS-ARM64")
+
+    if args[0] == "build":
+        exe("cmake --build build")
+
+    if args[0] == "proj":
+        cmd = "cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug"
+        if exeExists("ninja"): cmd + " -G Ninja"
+        exe(cmd)
+
+    if args[0] == "release":
+        exe("cmake -S . -B release -DCMAKE_BUILD_TYPE=Release")
+        exe("cmake --build release --config Release")
 
     if args[0] == "format":
         paths = list(pathlib.Path('src').rglob('*.c')) + list(pathlib.Path('src').rglob('*.h'))
