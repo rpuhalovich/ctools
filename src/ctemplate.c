@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "file.h"
-
 #define MAX_TYPES_LEN 256
 #define MAX_TYPES_LINE_LEN 128
 #define MAX_TEMPLATE_LEN 8192
