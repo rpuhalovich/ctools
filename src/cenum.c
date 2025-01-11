@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "file.h"
-
 #define MAX_STRLEN 128
 #define MAX_FILE_STRLEN 128
 #define MAX_ENUMS 128
@@ -33,12 +31,9 @@ int read_enum_file(char* path)
 
     int cur_value_index = 0;
 
-    char* line = NULL;
-    size_t linecap = 0;
-    size_t linelen;
-    while ((linelen = zgetline(&line, &linecap, f)) > 0) {
-        if (!linelen)
-            continue;
+    char line[MAX_STRLEN];
+    while (fgets(line, sizeof(line), f) != NULL) {
+        int linelen = strlen(line);
 
         int i = 0;
         for (; line[i] != ' ' && i < linelen; i++)
@@ -89,7 +84,6 @@ int read_enum_file(char* path)
         }
     }
 
-    free(line);
     fclose(f);
     return 0;
 }
