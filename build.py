@@ -1,4 +1,4 @@
-import pathlib
+import glob
 import os
 import shutil
 import subprocess
@@ -83,9 +83,9 @@ def main(args: list[str]) -> None:
         exe("cmake --build release --config Release")
 
     if args[0] == "format":
-        paths = list(pathlib.Path('src').rglob('*.c')) + list(pathlib.Path('src').rglob('*.h'))
+        paths = glob.glob('./src/**/*.c', recursive=True) + glob.glob('./src/**/*.h', recursive=True)
         for path in paths:
-            exe("clang-format -i --style=file ./src/" + path.name)
+            exe("clang-format -i --style=file " + path)
 
     if args[0] == "clean":
         rm("build")
