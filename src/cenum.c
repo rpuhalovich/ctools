@@ -140,7 +140,8 @@ int read_enum_file(char* path)
 int write_implementation(char* dir)
 {
     char path[MAX_STRLEN];
-    sprintf(path, "%s/%s", dir, cfile);
+    if (snprintf(path, MAX_STRLEN, "%s/%s", dir, cfile) < 0)
+        return 2;
 
     FILE* f = fopen(path, "w");
     if (f == NULL)
@@ -155,7 +156,7 @@ int write_implementation(char* dir)
         fprintf(f, "{\n");
         fprintf(f, "    switch (value) {\n");
         for (int j = 0; j < enums[i].valueslen; j++) {
-            sprintf(decl_full_name, "%s%s", enums[i].prefix, enums[i].values[j].name);
+            snprintf(decl_full_name, MAX_STRLEN, "%s%s", enums[i].prefix, enums[i].values[j].name);
             if (strlen(enums[i].values[j].label) == 0) {
                 fprintf(f, "        case (%s): return \"%s\";\n", decl_full_name, decl_full_name);
             } else {
@@ -177,7 +178,8 @@ int write_implementation(char* dir)
 int write_header(char* dir)
 {
     char path[MAX_STRLEN];
-    sprintf(path, "%s/%s", dir, hfile);
+    if (snprintf(path, MAX_STRLEN, "%s/%s", dir, hfile) < 0)
+        return 2;
 
     FILE* f = fopen(path, "w");
     if (f == NULL)
