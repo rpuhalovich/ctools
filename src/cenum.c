@@ -184,8 +184,13 @@ int write_header(char* dir)
     for (int i = 0; i < enumslen; i++) {
         fprintf(f, "typedef enum {\n");
         fprintf(f, "    %sBEGIN = 0,\n", enums[i].prefix);
-        for (int j = 0; j < enums[i].valueslen; j++)
-            fprintf(f, "    %s%s,\n", enums[i].prefix, enums[i].values[j].name);
+        for (int j = 0; j < enums[i].valueslen; j++) {
+            if (enums[i].values[j].val) {
+                fprintf(f, "    %s%s = %d,\n", enums[i].prefix, enums[i].values[j].name, enums[i].values[j].val);
+            } else {
+                fprintf(f, "    %s%s,\n", enums[i].prefix, enums[i].values[j].name);
+            }
+        }
         fprintf(f, "    %sEND\n", enums[i].prefix);
         fprintf(f, "} %s;\n\n", enums[i].name);
         fprintf(f, "char* toString_%s(%s value);\n\n", enums[i].name, enums[i].name);
