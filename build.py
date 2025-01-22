@@ -23,6 +23,17 @@ def cp(source: str, destination: str) -> None:
 def exeExists(exe: str) -> bool:
     return shutil.which(exe) != None
 
+def getTarFile(url: str, filename: str) -> None:
+    print("Get tar file '" + filename + "' from '" + url + "'...")
+    urllib.request.urlretrieve(url, filename)
+    print("Download success")
+    print("Extract tar file '" + filename + "'...")
+    tar = tarfile.open(filename)
+    tar.extractall(filter="data")
+    tar.close()
+    rm(filename)
+    print("Extract tar file success")
+
 def main(args: list[str]) -> None:
     if len(args) == 0:
         print("no args provided")
@@ -34,6 +45,7 @@ def main(args: list[str]) -> None:
         main(["install-cb"])
 
     if args[0] == "install-ctools":
+        print("# INSTALL CTOOLS")
         main(["release"])
         mkdir("bin")
 
@@ -44,31 +56,34 @@ def main(args: list[str]) -> None:
 
         cp("./release/ctemplate", "./bin/ctemplate")
         cp("./release/cenum", "./bin/cenum")
+        print("# DONE")
 
     if args[0] == "install-clang-tools":
         if sys.platform != "darwin": return
 
+        print("# INSTALL CLANG TOOLS")
+
         mkdir("./bin")
         mkdir("./tmp")
 
-        if not os.path.exists("./tmp/LLVM-19.1.6-macOS-ARM64.tar.xz"):
-            urllib.request.urlretrieve(
+        if not os.path.exists("./tmp/LLVM"):
+            getTarFile(
                 "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.6/LLVM-19.1.6-macOS-ARM64.tar.xz",
                 "LLVM-19.1.6-macOS-ARM64.tar.xz")
+            os.rename("./LLVM-19.1.6-macOS-ARM64", "./tmp/LLVM")
 
-        tar = tarfile.open("./tmp/LLVM-19.1.6-macOS-ARM64.tar.xz")
-        tar.extractall(filter="data")
-        tar.close()
-
-        cp("./LLVM-19.1.6-macOS-ARM64/bin/clang-format", "./bin/clang-format")
-        cp("./LLVM-19.1.6-macOS-ARM64/bin/clang-tidy", "./bin/clang-tidy")
+        cp("./tmp/LLVM/bin/clang-format", "./bin/clang-format")
+        cp("./tmp/LLVM/bin/clang-tidy", "./bin/clang-tidy")
 
         rm("./LLVM-19.1.6-macOS-ARM64")
+        print("# DONE")
 
     if args[0] == "install-cb":
+        print("# INSTALL CB")
         mkdir("./bin")
         cp("./scripts/cb", "./bin/cb")
         cp("./scripts/cb.bat", "./bin/cb.bat")
+        print("# DONE")
 
     if args[0] == "build":
         exe("cmake --build build")
