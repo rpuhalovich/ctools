@@ -24,7 +24,7 @@ def exeExists(exe: str) -> bool:
     return shutil.which(exe) != None
 
 def getTarFile(url: str, filename: str) -> None:
-    print("Get tar file '" + filename + "' from '" + url + "'...")
+    print("Download tar file '" + filename + "' from '" + url + "'...")
     urllib.request.urlretrieve(url, filename)
     print("Download success")
     print("Extract tar file '" + filename + "'...")
