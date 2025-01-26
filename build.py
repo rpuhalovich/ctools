@@ -45,11 +45,10 @@ def main(args: list[str]) -> None:
         main(["install-cb"])
 
     if args[0] == "install-ctools":
-        print("# INSTALL CTOOLS")
         main(["release"])
         mkdir("./bin")
 
-        exeList = [ "cenum", "ctemplate", "cdocs" ]
+        exeList = ["cenum", "ctemplate", "cdocs"]
         for e in exeList:
             if sys.platform == "win32":
                 cp("./release/Release/" + e + ".exe", "./bin/" + e + ".exe")
@@ -58,8 +57,6 @@ def main(args: list[str]) -> None:
 
     if args[0] == "install-clang-tools":
         if sys.platform != "darwin": return
-
-        print("# INSTALL CLANG TOOLS")
 
         mkdir("./bin")
         mkdir("./tmp")
@@ -74,14 +71,11 @@ def main(args: list[str]) -> None:
         cp("./tmp/LLVM/bin/clang-tidy", "./bin/clang-tidy")
 
         rm("./LLVM-19.1.6-macOS-ARM64")
-        print("# DONE")
 
     if args[0] == "install-cb":
-        print("# INSTALL CB")
         mkdir("./bin")
         cp("./scripts/cb", "./bin/cb")
         cp("./scripts/cb.bat", "./bin/cb.bat")
-        print("# DONE")
 
     if args[0] == "build":
         exe("cmake --build build")
