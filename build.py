@@ -35,15 +35,14 @@ def main(args: list[str]) -> None:
 
     if args[0] == "install-ctools":
         main(["release"])
-        mkdir("bin")
+        mkdir("./bin")
 
-        if sys.platform == "win32":
-            cp("./release/Release/ctemplate.exe", "./bin/ctemplate.exe")
-            cp("./release/Release/cenum.exe", "./bin/cenum.exe")
-            return
-
-        cp("./release/ctemplate", "./bin/ctemplate")
-        cp("./release/cenum", "./bin/cenum")
+        exeList = [ "cenum", "ctemplate", "cdocs" ]
+        for e in exeList:
+            if sys.platform == "win32":
+                cp("./release/Release/" + e + ".exe", "./bin/" + e + ".exe")
+            else:
+                cp("./release/" + e, "./bin/" + e)
 
     if args[0] == "install-clang-tools":
         if sys.platform != "darwin": return
