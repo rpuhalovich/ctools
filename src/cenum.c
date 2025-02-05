@@ -152,7 +152,7 @@ int write_implementation(char* dir)
 
     char decl_full_name[MAX_STRLEN];
     for (int i = 0; i < enumslen; i++) {
-        fprintf(f, "char* toString_%s(%s value)\n", enums[i].name, enums[i].name);
+        fprintf(f, "char* toString_%s(int value)\n", enums[i].name);
         fprintf(f, "{\n");
         fprintf(f, "    switch (value) {\n");
         for (int j = 0; j < enums[i].valueslen; j++) {
@@ -201,7 +201,7 @@ int write_header(char* dir)
         }
         fprintf(f, "    %sEND\n", enums[i].prefix);
         fprintf(f, "} %s;\n\n", enums[i].name);
-        fprintf(f, "char* toString_%s(%s value);\n\n", enums[i].name, enums[i].name);
+        fprintf(f, "char* toString_%s(int value);\n\n", enums[i].name);
     }
 
     fprintf(f, "#endif // %s\n", hfile_ifndef);
