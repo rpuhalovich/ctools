@@ -3,10 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "arena.c"
+
 #define MAX_STRLEN 128
 #define MAX_FILE_STRLEN 128
 #define MAX_ENUMS 128
 #define MAX_ENUM_VALUES 128
+
+Arena* arena;
 
 char cfile[MAX_FILE_STRLEN];
 char hfile[MAX_FILE_STRLEN];
@@ -27,15 +31,6 @@ typedef struct {
 
 Enum* enums;
 size_t enumslen;
-
-unsigned char* pool;
-unsigned char* ptr;
-void* allocate(size_t size)
-{
-    void* resptr = ptr;
-    ptr += size;
-    return resptr;
-}
 
 int read_enum_file(char* path)
 {
@@ -74,12 +69,12 @@ int read_enum_file(char* path)
                 ;
 
             Enum e = {0};
-            e.values = allocate(sizeof(Value) * MAX_ENUM_VALUES);
+            e.values = allocate(arena, sizeof(Value) * MAX_ENUM_VALUES);
 
-            e.name = allocate(sizeof(char) * MAX_STRLEN);
+            e.name = allocate(arena, sizeof(char) * MAX_STRLEN);
             memcpy(e.name, (char*)(line + spaceidx + 1), spaceidx2 - spaceidx - 1);
 
-            e.prefix = allocate(sizeof(char) * MAX_STRLEN);
+            e.prefix = allocate(arena, sizeof(char) * MAX_STRLEN);
             memcpy(e.prefix, (char*)(line + spaceidx2 + 1), linelen - spaceidx2 - 2);
 
             enums[enumslen++] = e;
@@ -91,8 +86,8 @@ int read_enum_file(char* path)
                 ;
 
             Value v = {0};
-            v.name = allocate(sizeof(char) * MAX_STRLEN);
-            v.label = allocate(sizeof(char) * MAX_STRLEN);
+            v.name = allocate(arena, sizeof(char) * MAX_STRLEN);
+            v.label = allocate(arena, sizeof(char) * MAX_STRLEN);
 
             if (spaceidx2 == linelen) {
                 memcpy(v.name, (char*)(line + spaceidx + 1), linelen - spaceidx - 2);
@@ -119,8 +114,8 @@ int read_enum_file(char* path)
             memcpy(valstr, (char*)(line + spaceidx + 1), linelen - spaceidx - 2);
             v.val = atoi(valstr);
 
-            v.name = allocate(sizeof(char) * MAX_STRLEN);
-            v.label = allocate(sizeof(char) * MAX_STRLEN);
+            v.name = allocate(arena, sizeof(char) * MAX_STRLEN);
+            v.label = allocate(arena, sizeof(char) * MAX_STRLEN);
 
             if (spaceidx3 == linelen) {
                 memcpy(v.name, (char*)(line + spaceidx2 + 1), linelen - spaceidx2 - 2);
@@ -215,12 +210,9 @@ int main(int argc, char** argv)
     if (argc != 3)
         return 1;
 
-    size_t size = 8000000; // 8MB
-    pool = malloc(size);
-    memset(pool, 0, size);
-    ptr = pool;
+    arena = newArena(MEGABYTES(8));
 
-    enums = allocate(sizeof(Enum) * MAX_ENUMS);
+    enums = allocate(arena, sizeof(Enum) * MAX_ENUMS);
 
     int retval = read_enum_file(argv[1]);
     if (!strlen(cfile) || !strlen(hfile) || retval)
@@ -235,6 +227,6 @@ int main(int argc, char** argv)
         goto cleanup;
 
 cleanup:
-    free(pool);
+    freeArena(arena);
     return retval;
 }
