@@ -39,6 +39,10 @@ def main(args: list[str]) -> None:
         print("no args provided")
         return
 
+    if args[0] == "gen":
+        mkdir("./gen")
+        exe("./build/ctemplate ./src/_types.ctypes ./src/_test.ht ./gen/_test.h")
+
     if args[0] == "install-all":
         main(["install-ctools"])
         main(["install-clang-tools"])
@@ -48,7 +52,7 @@ def main(args: list[str]) -> None:
         main(["release"])
         mkdir("./bin")
 
-        exeList = ["cenum", "ctemplate", "cdocs"]
+        exeList = ["cenum", "ctemplate"]
         for e in exeList:
             if sys.platform == "win32":
                 cp("./release/Release/" + e + ".exe", "./bin/" + e + ".exe")
@@ -84,6 +88,9 @@ def main(args: list[str]) -> None:
         cmd = "cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug"
         if exeExists("ninja"): cmd + " -G Ninja"
         exe(cmd)
+
+    if args[0] == "xcode":
+        exe("cmake -S . -B xcode -G Xcode")
 
     if args[0] == "release":
         exe("cmake -S . -B release -DCMAKE_BUILD_TYPE=Release")

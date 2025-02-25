@@ -1,1 +1,4 @@
+FORWARD tThing Thing
+TYPE Thing*
 TYPE i32
+TYPE2 i32 Thing*

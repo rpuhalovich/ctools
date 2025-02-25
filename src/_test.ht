@@ -1,0 +1,57 @@
+#ifndef TEST_H
+#define TEST_H
+
+%FORWARD%
+
+%TEMPLATE_BEGIN%
+typedef struct sArray_%TYPENP% {
+    %TYPE%* items;
+    u32 length;
+    u32 capacity;
+} Array_%TYPENP%;
+
+Array_%TYPENP%* newArray_%TYPENP%(Arena* arena);
+%TYPE% get_%TYPENP%(Array_%TYPENP%* array, u32 i);
+%TEMPLATE_END%
+
+%TEMPLATE2_BEGIN%
+typedef struct sHashMap_%TYPE1NP%_%TYPE2NP% {
+    Array_%TYPE1NP%* keys;
+    Array_%TYPE2NP%* values;
+} HashMap_%TYPE1NP%_%TYPE2NP%;
+
+HashMap_%TYPE1NP%_%TYPE2NP%* newHashMap_%TYPE1NP%_%TYPE2NP%(Arena* arena);
+%TYPE2NP% get_%TYPE1NP%_%TYPE2NP%(HashMap_%TYPE1NP%_%TYPE2NP%* hm, %TYPE1% key);
+%TEMPLATE2_END%
+
+#ifdef TEST_IMPLEMENTATION
+#undef TEST_IMPLEMENTATION
+
+%TEMPLATE_BEGIN%
+Array_%TYPENP%* newArray_%TYPENP%(Arena* arena)
+{
+    return newArrayc_%TYPENP%(arena, 16);
+}
+
+%TYPE% get_%TYPENP%(Array_%TYPENP%* array, u32 i)
+{
+    return array->items[i];
+}
+%TEMPLATE_END%
+
+%TEMPLATE2_BEGIN%
+HashMap_%TYPE1NP%_%TYPE2NP%* newHashMap_%TYPE1NP%_%TYPE2NP%(Arena* arena)
+{
+    HashMap_%TYPE1NP%_%TYPE2NP%* hm = allocate(arena, sizeof(HashMap_%TYPE1NP%_%TYPE2NP%*));
+    return hm;
+}
+
+%TYPE2% get_%TYPE1NP%_%TYPE2NP%(HashMap_%TYPE1NP%_%TYPE2NP%* hm, %TYPE1% key)
+{
+    return hm->values->items[0];
+}
+%TEMPLATE2_END%
+
+#endif // TEST_IMPLEMENTATION
+
+#endif // TEST_H

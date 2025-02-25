@@ -13,17 +13,10 @@ typedef struct {
 
 void* allocate(Arena* a, size_t size)
 {
-    assert(((a->ptr - a->memory) + size) < a->capacity);
+    assert(((a->ptr - a->memory) + size) <= a->capacity);
     unsigned char* ptr = a->ptr;
     a->ptr += size;
     return ptr;
-}
-
-void* reallocate(Arena* a, void* ptr, size_t oldsize, size_t newsize)
-{
-    void* newptr = allocate(a, newsize);
-    memcpy(newptr, ptr, oldsize);
-    return newptr;
 }
 
 void freeArena(Arena* a)
@@ -46,20 +39,6 @@ Arena* newArena(size_t size)
     memset(a, 0, sizeof(Arena));
 
     a->memory = malloc(size);
-    memset(a->memory, 0, size);
-
-    a->ptr = a->memory;
-    a->capacity = size;
-
-    return a;
-}
-
-Arena* newArenaa(Arena* arena, size_t size)
-{
-    Arena* a = allocate(arena, sizeof(Arena));
-    memset(a, 0, sizeof(Arena));
-
-    a->memory = allocate(arena, size);
     memset(a->memory, 0, size);
 
     a->ptr = a->memory;
