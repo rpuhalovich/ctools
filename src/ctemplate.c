@@ -232,8 +232,7 @@ int main(int argc, char** argv)
     _tmpstr = allocate(arena, MEGABYTES(8));
 
     multiTypes = allocate(arena, sizeof(MultiType) * MAX_TYPES_LEN);
-
-    templateBuffer = malloc(sizeof(char) * 1024 * 512);
+    templateBuffer = allocate(arena, sizeof(char) * 1024 * 512);
 
     read_types_file(argv[1]);
 
@@ -244,7 +243,6 @@ int main(int argc, char** argv)
     write_file(argv[3]);
 
     freeArena(arena);
-    free(templateBuffer);
 
     return 0;
 }
