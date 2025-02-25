@@ -244,6 +244,7 @@ int main(int argc, char** argv)
     write_file(argv[3]);
 
     freeArena(arena);
+    free(templateBuffer);
 
     return 0;
 }
