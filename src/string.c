@@ -30,25 +30,19 @@ char* toNpString(Arena* arena, char* str)
         if (res[i] == '*') starcount++;
     }
 
-    int l = 0, r = strlen(res) - 1;
-    while (l < r) {
+    for (int l = 0, r = strlen(res) - 1; l < r; r--, l++) {
         char tmp = res[l];
         res[l] = res[r];
         res[r] = tmp;
-        r--;
-        l++;
     }
 
     for (int i = 0; i < starcount; i++)
         res[i] = 'p';
 
-    l = starcount, r = strlen(res) - 1;
-    while (l < r) {
+    for (int l = starcount, r = strlen(res) - 1; l < r; r--, l++) {
         char tmp = res[l];
         res[l] = res[r];
         res[r] = tmp;
-        r--;
-        l++;
     }
 
     res[strlen(res)] = '\0';
