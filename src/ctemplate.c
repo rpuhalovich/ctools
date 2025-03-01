@@ -37,15 +37,6 @@ size_t multiTypesLen;
 char* templateBuffer;
 size_t templateBufferSize;
 
-int countPtr(char* str, int strlen)
-{
-    int res = 0;
-    for (int i = 0; i < strlen; i++) {
-        if (str[i] == '*') res++;
-    }
-    return res;
-}
-
 char* _tmpstr;
 void write_string_to_file(FILE* f, char* str, int strlen)
 {
