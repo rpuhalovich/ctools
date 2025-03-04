@@ -77,7 +77,7 @@ void read_types_file(char* path)
 
             multiTypes[multiTypesLen] = allocate(arena, sizeof(MultiType));
 
-            for (int i = 0; (token = strsep(&string, " ")) != NULL; i++) {
+            for (int i = 0; (token = zstrsep(&string, " ")) != NULL; i++) {
                 if (strncmp(token, "\0", 1) == 0)
                     continue;
 
