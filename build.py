@@ -93,8 +93,8 @@ def main(args: list[str]) -> None:
         exe("cmake -S . -B xcode -G Xcode")
 
     if args[0] == "release":
-        exe("cmake -S . -B release -DCMAKE_BUILD_TYPE=Release")
-        exe("cmake --build release --config Release")
+        exe("cmake -S . -B build -DCMAKE_BUILD_TYPE=Release")
+        exe("cmake --build build --config Release")
 
     if args[0] == "format":
         paths = glob.glob('./src/**/*.c', recursive=True) + glob.glob('./src/**/*.h', recursive=True)
